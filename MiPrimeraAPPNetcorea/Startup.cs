@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MiPrimeraAPPNetcorea.Infraestructure;
+using MiPrimeraAPPNetcorea.Repository;
+using MiPrimeraAPPNetcorea.Repository.IRepository;
 
 namespace MiPrimeraAPPNetcorea
 {
@@ -27,7 +29,8 @@ namespace MiPrimeraAPPNetcorea
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-          services.AddDbContext<CatalogoDbContext>(Options => Options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+            services.AddDbContext<CatalogoDbContext>(Options => Options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
         }
 

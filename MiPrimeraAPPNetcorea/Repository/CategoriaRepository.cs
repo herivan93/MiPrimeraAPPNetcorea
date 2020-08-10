@@ -1,5 +1,8 @@
-﻿using MiPrimeraAPPNetcorea.Infraestructure;
+﻿using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
+using MiPrimeraAPPNetcorea.Infraestructure;
 using MiPrimeraAPPNetcorea.Model;
+using MiPrimeraAPPNetcorea.Repository.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MiPrimeraAPPNetcorea.Repository
 {
-    public class CategoriaRepository
+    public class CategoriaRepository : ICategoriaRepository
     {
         private readonly CatalogoDbContext _bdCatalogo;
 
@@ -20,61 +23,101 @@ namespace MiPrimeraAPPNetcorea.Repository
         {
             _bdCatalogo.Categoria.Add(DatosCategoria);
             _bdCatalogo.SaveChanges();
+
             return DatosCategoria.IdCategoria;
+
+            throw new NotImplementedException();
         }
 
-        public ICollection<int> CreateCategoria(ICollection<Categoria> DatosCategoria)
+        public bool DeleteCategoria(int IdCategoria)
         {
-            _bdCatalogo.Categoria.AddRange(DatosCategoria);
-
+            var item = _bdCatalogo.Categoria.Where(x => x.IdCategoria == IdCategoria).FirstOrDefault();
+            _bdCatalogo.Categoria.Remove(item);
             _bdCatalogo.SaveChanges();
-            return DatosCategoria.Select(i=> i.IdCategoria).ToList();
-        }
-
-        public bool ExisteCategoria(string Nombre)
-        {
-            return _bdCatalogo.Categoria.Any(x => x.Nombre == Nombre);
-        }
-
-        public Categoria GetCategoria(int Id)
-        {
-            var ItemCategoria = _bdCatalogo.Categoria.Where(x => x.IdCategoria == Id).FirstOrDefault();
-
-            return ItemCategoria;
-        }
-
-        public bool DeleteCategoria(int Id)
-        {
-
-            var ItemCategoria = _bdCatalogo.Categoria.Where(x => x.IdCategoria == Id).FirstOrDefault();
-
-            _bdCatalogo.Categoria.Remove(ItemCategoria);
-            _bdCatalogo.SaveChanges();
-
             return true;
 
+
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteCategoria(ICollection<int> IdCategoria)
+        {
+
+            var ListItem = _bdCatalogo.Categoria.Where(x => IdCategoria.Contains(x.IdCategoria)).ToList();
+            _bdCatalogo.Categoria.RemoveRange(ListItem);
+            _bdCatalogo.SaveChanges();
+            return true;
+
+            throw new NotImplementedException();
+        }
+
+        public bool ExistsCategoria(string Nombre)
+        {
+            return _bdCatalogo.Categoria.Any(x => x.Nombre.ToUpper() == Nombre.ToUpper());
+
+            throw new NotImplementedException();
+        }
+
+        public bool ExistsCategoria(int IdCategoria)
+        {
+            return _bdCatalogo.Categoria.Any(x => x.IdCategoria == IdCategoria);
+
+            throw new NotImplementedException();
+        }
+
+        public ICollection<Categoria> GetCategoria()
+        {
+            return _bdCatalogo.Categoria.ToList();
+
+            throw new NotImplementedException();
+        }
+
+        public Categoria GetCategoria(int IdCategoria)
+        {
+            return _bdCatalogo.Categoria.Where(x=> x.IdCategoria == IdCategoria).FirstOrDefault();
+            throw new NotImplementedException();
         }
 
         public Categoria UpdateCategoria(Categoria DatosCategoria)
         {
-            var ItemCategoria = _bdCatalogo.Categoria.Where(x => x.IdCategoria == DatosCategoria.IdCategoria).FirstOrDefault();
-            ItemCategoria.Nombre = DatosCategoria.Nombre;
-            _bdCatalogo.SaveChanges();
-            return ItemCategoria;
+            var Item = _bdCatalogo.Categoria.Where(x => x.IdCategoria == DatosCategoria.IdCategoria).FirstOrDefault();
+
+            Item.Nombre = DatosCategoria.Nombre;
+            Item.ImagenMiniatura = DatosCategoria.ImagenMiniatura;
+            Item.ImagenBanner = DatosCategoria.ImagenBanner;
+            Item.Activo = DatosCategoria.Activo;
+            Item.FechaCreo = DatosCategoria.FechaCreo;
+            Item.UsuarioCreo = DatosCategoria.UsuarioCreo;
+            Item.FechaCreo = DatosCategoria.FechaCreo;
+            Item.UsuarioModifico = DatosCategoria.UsuarioModifico;
+            Item.FechaModifico = DatosCategoria.FechaModifico;
+
+            throw new NotImplementedException();
         }
 
         public ICollection<Categoria> UpdateCategoria(ICollection<Categoria> DatosCategoria)
         {
-            var LstItem = _bdCatalogo.Categoria.Where(x => DatosCategoria.Select(i => i.IdCategoria).ToList().Contains(x.IdCategoria)).ToList();
+            var ListItem = _bdCatalogo.Categoria.Where(x => DatosCategoria.Select(i => i.IdCategoria).ToList().Contains(x.IdCategoria)).ToList();
 
-            LstItem.ForEach(u =>
+            ListItem.ForEach(u =>
             {
                 u.Nombre = DatosCategoria.Where(i => i.IdCategoria == u.IdCategoria).Select(n => n.Nombre).FirstOrDefault();
+                u.ImagenMiniatura = DatosCategoria.Where(i => i.IdCategoria == u.IdCategoria).Select(n => n.ImagenMiniatura).FirstOrDefault();
+                u.ImagenBanner = DatosCategoria.Where(i => i.IdCategoria == u.IdCategoria).Select(n => n.ImagenBanner).FirstOrDefault();
+                u.Activo= DatosCategoria.Where(i => i.IdCategoria == u.IdCategoria).Select(n => n.Activo).FirstOrDefault();
+                u.FechaCreo = DatosCategoria.Where(i => i.IdCategoria == u.IdCategoria).Select(n => n.FechaCreo).FirstOrDefault();
+                u.UsuarioCreo = DatosCategoria.Where(i => i.IdCategoria == u.IdCategoria).Select(n => n.UsuarioCreo).FirstOrDefault();
+                u.FechaCreo = DatosCategoria.Where(i => i.IdCategoria == u.IdCategoria).Select(n => n.FechaCreo).FirstOrDefault();
+                u.UsuarioModifico = DatosCategoria.Where(i => i.IdCategoria == u.IdCategoria).Select(n => n.UsuarioModifico).FirstOrDefault();
+                u.FechaModifico  = DatosCategoria.Where(i => i.IdCategoria == u.IdCategoria).Select(n => n.FechaModifico).FirstOrDefault();
             });
+
             _bdCatalogo.SaveChanges();
 
-            return DatosCategoria;
-        }
+            return _bdCatalogo.Categoria.Where(x => DatosCategoria.Select(i => i.IdCategoria).ToList().Contains(x.IdCategoria)).ToList();
 
+
+            throw new NotImplementedException();
+        }
     }
 }

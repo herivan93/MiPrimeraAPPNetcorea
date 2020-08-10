@@ -8,11 +8,13 @@ namespace MiPrimeraAPPNetcorea.Repository.IRepository
 {
     public interface ICategoriaRepository
     {
+        ICollection<Categoria> GetCategoria();
+        Categoria GetCategoria(int IdCategoria);
+        bool ExistsCategoria(string Nombre);
+        bool ExistsCategoria(int IdCategoria);
         int CreateCategoria(Categoria DatosCategoria);
-        ICollection<int> CreateCategoria(ICollection<Categoria> DatosCategoria);
-        bool ExisteCategoria(string Nombre);
-        Categoria GetCategoria(int Id);
-        bool DeleteCategoria(int Id);
+        bool DeleteCategoria(int IdCategoria);
+        bool DeleteCategoria(ICollection<int> IdCategoria);
         Categoria UpdateCategoria(Categoria DatosCategoria);
         ICollection<Categoria> UpdateCategoria(ICollection<Categoria> DatosCategoria);
     }

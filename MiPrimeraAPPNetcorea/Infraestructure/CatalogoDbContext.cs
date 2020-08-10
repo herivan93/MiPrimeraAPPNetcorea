@@ -2,6 +2,7 @@
 using MiPrimeraAPPNetcorea.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace MiPrimeraAPPNetcorea.Infraestructure
     {
         public CatalogoDbContext(DbContextOptions<CatalogoDbContext> options) : base(options)
         {
-            
+
         }
 
         public DbSet<Categoria> Categoria { get; set; }

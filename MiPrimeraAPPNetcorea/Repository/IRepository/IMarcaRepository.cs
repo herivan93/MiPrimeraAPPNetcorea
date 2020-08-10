@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 
 namespace MiPrimeraAPPNetcorea.Repository.IRepository
 {
-     public interface IMarcaRepository
+    public interface IMarcaRepository
     {
         ICollection<Marca> GetMarca();
-        Marca GetMarca(int Id);
+        Marca GetMarca(int IdMarca);
         bool ExistsMarca(string Nombre);
-        bool ExistsMarca(int Id);
-        int CreateMarca(Marca DatosMarca);
-        ICollection<int> CreateMarca(ICollection<Marca> DatoMarca);
-        bool DeleteMarca(int MarcaObjectId);
-        bool DeleteMarca(ICollection<int> MarcaObjectId);
-        Marca UpdateMarca(Marca DatoMarca);
-        ICollection<Marca> UpdateMarca(ICollection<Marca> DatoMarca);
-
+        bool ExistsMarca(int IdMarca);
+        Guid CreateMarca(Marca DatosMarca);
+        ICollection<int> CreateMarca(ICollection<Marca> DatosMarca);
+        bool DeleteMarca(Guid IdMarca);
+        bool DeleteMarca(ICollection<int> IdMarca);
+        Marca UpdateMarca(Marca DatosMarca);
+        ICollection<Marca> UpdateMarca(ICollection<Marca> DatosMarca);
     }
 }

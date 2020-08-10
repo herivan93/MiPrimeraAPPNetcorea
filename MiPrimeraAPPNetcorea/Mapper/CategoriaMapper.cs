@@ -13,7 +13,6 @@ namespace MiPrimeraAPPNetcorea.Mapper
         public CategoriaMapper()
         {
             CreateMap<Categoria, CategoriaDTO>().ReverseMap();
-            CreateMap<Marca, MarcaDTO>().ReverseMap();
         }
     }
 }

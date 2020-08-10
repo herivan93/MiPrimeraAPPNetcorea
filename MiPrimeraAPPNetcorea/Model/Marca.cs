@@ -10,8 +10,8 @@ namespace MiPrimeraAPPNetcorea.Model
     [Table("Marca", Schema = "Cat")]
     public class Marca
     {
-        [Key]
-        public int ObjectId { get; set; }
+        [Key] 
+        public int IdMarca { get; set; }
         [Required]
         [StringLength(50)]
         public string Nombre { get; set; }
