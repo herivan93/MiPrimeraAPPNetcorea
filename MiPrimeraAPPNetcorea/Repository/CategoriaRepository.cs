@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Internal;
+﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using MiPrimeraAPPNetcorea.Infraestructure;
 using MiPrimeraAPPNetcorea.Model;
@@ -91,6 +92,10 @@ namespace MiPrimeraAPPNetcorea.Repository
             Item.FechaCreo = DatosCategoria.FechaCreo;
             Item.UsuarioModifico = DatosCategoria.UsuarioModifico;
             Item.FechaModifico = DatosCategoria.FechaModifico;
+
+            _bdCatalogo.SaveChanges();
+
+            return Item;
 
             throw new NotImplementedException();
         }

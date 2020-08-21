@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using MiPrimeraAPPNetcorea.Infraestructure;
 using MiPrimeraAPPNetcorea.Repository;
 using MiPrimeraAPPNetcorea.Repository.IRepository;
+using AutoMapper;
+using MiPrimeraAPPNetcorea.Mapper;
 
 namespace MiPrimeraAPPNetcorea
 {
@@ -31,6 +33,8 @@ namespace MiPrimeraAPPNetcorea
         {
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
             services.AddDbContext<CatalogoDbContext>(Options => Options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAutoMapper(typeof(CategoriaMapper));
+
             services.AddControllers();
         }
 
