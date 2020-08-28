@@ -16,6 +16,9 @@ using MiPrimeraAPPNetcorea.Repository;
 using MiPrimeraAPPNetcorea.Repository.IRepository;
 using AutoMapper;
 using MiPrimeraAPPNetcorea.Mapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace MiPrimeraAPPNetcorea
 {
@@ -32,8 +35,21 @@ namespace MiPrimeraAPPNetcorea
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddDbContext<CatalogoDbContext>(Options => Options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(typeof(CategoriaMapper));
+            services.AddAutoMapper(typeof(UsuarioMapper));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:TokenKey").Value)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                };
+            });
 
             services.AddControllers();
         }
@@ -50,6 +66,7 @@ namespace MiPrimeraAPPNetcorea
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
