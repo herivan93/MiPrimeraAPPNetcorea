@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MiPrimeraAPPNetcorea.DTO;
@@ -12,6 +13,7 @@ namespace MiPrimeraAPPNetcorea.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "CatalogosCategoriasAPI")]
     public class Categoria : ControllerBase
     {
 
@@ -25,8 +27,12 @@ namespace MiPrimeraAPPNetcorea.Controllers
             _Mapper = Mapper;
         }
 
-    
 
+        /// <summary>
+        /// Aqui va la descripcion para lo que sirve este metodo
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
         [HttpGet]
         public ActionResult GetCategoria()
         {
@@ -41,7 +47,11 @@ namespace MiPrimeraAPPNetcorea.Controllers
             return Ok(LstCategoriaLDTO);
         }
 
-
+        /// <summary>
+        /// Obtiene las categorias basado en un ID
+        /// </summary>
+        /// <param name="IdCategoria">Id de categoria a buscar</param>
+        /// <returns></returns>
         [HttpGet("{IdCategoria:int}", Name = "GetCategoria")]
         public ActionResult GetCategoria(int IdCategoria)
         {

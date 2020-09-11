@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MiPrimeraAPPNetcorea</name>
+    </assembly>
+    <members>
+        <member name="M:MiPrimeraAPPNetcorea.Controllers.Categoria.GetCategoria">
+            <summary>
+            Aqui va la descripcion para lo que sirve este metodo
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MiPrimeraAPPNetcorea.Controllers.Categoria.GetCategoria(System.Int32)">
+            <summary>
+            Obtiene las categorias basado en un ID
+            </summary>
+            <param name="IdCategoria">Id de categoria a buscar</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

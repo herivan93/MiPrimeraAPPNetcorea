@@ -19,11 +19,17 @@ using MiPrimeraAPPNetcorea.Mapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.EntityFrameworkCore.Migrations;
+using System.Reflection;
+using System.IO;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 
 namespace MiPrimeraAPPNetcorea
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -51,6 +57,87 @@ namespace MiPrimeraAPPNetcorea
                 };
             });
 
+            //Swagger
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("CatalogosCategoriasAPI", new Microsoft.OpenApi.Models.OpenApiInfo()
+                {
+                    Title = "Catalogos Generales API",
+                    Description = "Contiene los catalogos genericos de aplicaciones",
+                    Version = "1.0",
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact
+                    {
+                        Email = "soluciones@axsistec.com",
+                        Name = "Soporte tecnico a desarrollos",
+                        Url = new Uri("https://axsistecnologia.com")
+                    },
+                    License = new Microsoft.OpenApi.Models.OpenApiLicense
+                    {
+                        Name = "BSD",
+                        Url = new Uri("https://bsd.axsistec.com")
+                    }
+                });
+
+
+
+                options.SwaggerDoc("APIUsuariosCatalogo", new Microsoft.OpenApi.Models.OpenApiInfo()
+                {
+                    Title = "Usuarios API",
+                    Description = "Contiene los catalogos genericos de aplicaciones",
+                    Version = "1.0",
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact
+                    {
+                        Email = "soluciones@axsistec.com",
+                        Name = "Soporte tecnico a desarrollos",
+                        Url = new Uri("https://axsistecnologia.com")
+                    },
+                    License = new Microsoft.OpenApi.Models.OpenApiLicense
+                    {
+                        Name = "BSD",
+                        Url = new Uri("https://bsd.axsistec.com")
+                    }
+                });
+
+
+                var XMLComentarios = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var APIRutaComentarios = Path.Combine(AppContext.BaseDirectory, XMLComentarios);
+                options.IncludeXmlComments(APIRutaComentarios);
+
+                options.AddSecurityDefinition("Bearer",
+                   new OpenApiSecurityScheme
+                   {
+                       Description = "JWT Authentication",
+                       Type = SecuritySchemeType.Http,
+                       Scheme = "bearer"
+                   });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement{
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Id= "Bearer",
+                                Type= ReferenceType.SecurityScheme
+                            }
+                        }, new List<string>()
+                    }
+                });
+
+            });
+
+
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy(name: MyAllowSpecificOrigins,
+            //        builder =>
+            //        {
+            //            builder.WithOrigins("http://google.com",
+            //                                "http://facebook.com");
+
+            //        });
+            //});
+
             services.AddControllers();
         }
 
@@ -64,6 +151,14 @@ namespace MiPrimeraAPPNetcorea
 
             app.UseHttpsRedirection();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("swagger/CatalogosCategoriasAPI/swagger.json", "API Catalogos");
+                options.SwaggerEndpoint("swagger/APIUsuariosCatalogo/swagger.json", "API Usuario Catalgo");
+                options.RoutePrefix = "";
+            });
+
             app.UseRouting();
 
             app.UseAuthentication();
@@ -73,6 +168,10 @@ namespace MiPrimeraAPPNetcorea
             {
                 endpoints.MapControllers();
             });
+
+            //app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
         }
     }
 }

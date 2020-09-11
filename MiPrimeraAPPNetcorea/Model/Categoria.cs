@@ -9,7 +9,9 @@ using System.Xml.Serialization;
 namespace MiPrimeraAPPNetcorea.Model
 {
     [Table("Categoria",Schema = "Cat" )]
+#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
     public class Categoria
+
     {
         [Key]
         public int IdCategoria { get; set; }
@@ -27,6 +29,7 @@ namespace MiPrimeraAPPNetcorea.Model
         public Guid UsuarioCreo { get; set; }
         public DateTime FechaModifico { get; set; }
         public Guid UsuarioModifico { get; set; }
+#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
     }
 }
